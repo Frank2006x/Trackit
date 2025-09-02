@@ -124,6 +124,7 @@ export const useHabits = create<HabitsState>((set) => ({
     try {
       const response = await axios.delete(`/api/habits/complete/${id}`);
       const { streak } = response.data;
+      axios.post("/api/userStats/xp", { xp: -10 });
 
       set((state) => ({
         habits: state.habits.map((habit) =>

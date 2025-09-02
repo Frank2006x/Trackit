@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
       });
     } else {
       const already = stats.onlineDays.some(
-        (d) => new Date(d).toDateString() === startOfDay.toDateString()
+        (d: string | number | Date) => new Date(d).toDateString() === startOfDay.toDateString()
       );
       if (!already) {
         stats.onlineDays.push(startOfDay);

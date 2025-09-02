@@ -11,9 +11,19 @@ import { useHabits } from "@/store/useHabits";
 
 import Habit from "@/store/useHabits";
 import PomodoroTimer from "@/components/PomodoroTimer";
-import { initUserStats } from "@/lib/action";
+import { getUserStats, initUserStats, markUserOnline } from "@/lib/action";
+import { NumberTicker } from "@/components/magicui/number-ticker";
 
 export default function PrivatePage() {
+  const [userStats, setUserStats] = useState<any>(null);
+  useEffect(() => {
+    const fetchStats = async () => {
+      const stats = await getUserStats();
+      setUserStats(stats);
+    };
+    fetchStats();
+  }, []);
+
   const { data: session, status } = useSession();
   const router = useRouter();
   const [selectedHabit, setSelectedHabit] = useState<Habit | null>(null);
@@ -39,6 +49,7 @@ export default function PrivatePage() {
 
   useEffect(() => {
     initUserStats();
+    markUserOnline();
   }, []);
 
   useEffect(() => {
@@ -64,6 +75,8 @@ export default function PrivatePage() {
     } else {
       await uncompleteHabit(habit._id);
     }
+    const stats = await getUserStats();
+    setUserStats(stats);
   };
 
   const handleSubmitHabit = async (e: React.FormEvent) => {
@@ -380,9 +393,9 @@ export default function PrivatePage() {
                             type="checkbox"
                             className="w-5 h-5 rounded border-border"
                             checked={isCompletedToday(habit)}
-                            onChange={(e) =>
-                              handleCheckboxChange(habit, e.target.checked)
-                            }
+                            onChange={(e) => {
+                              handleCheckboxChange(habit, e.target.checked);
+                            }}
                           />
                           <span
                             className={`flex-1 text-foreground ${
@@ -431,8 +444,49 @@ export default function PrivatePage() {
               </div>
             </div>
             <PomodoroTimer />
-            <div className="w-[25%] flex justify-end">
+            <div className="w-[25%] flex flex-col items-end ">
               <Calendar04 />
+              {userStats ? (
+                <div className="bg-gradient-to-br from-card via-card to-background/20 border border-border rounded-xl p-6 mt-4 w-62 text-foreground shadow-lg">
+                  <div className="font-bold text-xl mb-4 text-center bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
+                    User Stats
+                  </div>
+
+                  <div className="flex flex-col items-center gap-4">
+                    <div className="flex flex-col items-center gap-2 bg-gradient-to-r from-yellow-500/10 to-orange-500/10 rounded-lg p-4 w-full">
+                      <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+                        Total XP
+                      </h2>
+                      <div className="flex  items-center gap-2">
+                        <NumberTicker
+                          value={userStats.totalXp}
+                          className="whitespace-pre-wrap text-6xl font-medium tracking-tighter text-black dark:text-white"
+                        />
+                        <h1>XP</h1>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col items-center gap-2 bg-gradient-to-r from-red-500/10 to-orange-500/10 rounded-lg p-4 w-full">
+                      <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+                        Active Days
+                      </h2>
+                      <div className="flex items-center gap-2">
+                        <span className="text-2xl">🔥</span>
+                        <span className="text-2xl font-bold text-orange-500">
+                          {userStats.activeDays || 0}
+                        </span>
+                        <span className="text-sm text-muted-foreground font-medium">
+                          days
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-muted-foreground mt-4">
+                  Loading user stats...
+                </div>
+              )}
             </div>
           </div>
         </div>

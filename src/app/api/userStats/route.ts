@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     if (existing) {
       return NextResponse.json(
         { message: "User stats already exist" },
-        { status: 400 }
+        { status: 200 }
       );
     }
 
