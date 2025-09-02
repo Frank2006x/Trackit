@@ -34,6 +34,9 @@ interface HabitsState {
       | "lastCompleted"
     >
   ) => Promise<void>;
+  deleteHabit: (id: string) => Promise<void>;
+  completeHabit: (id: string) => Promise<void>;
+  uncompleteHabit: (id: string) => Promise<void>;
 }
 
 export const useHabits = create<HabitsState>((set) => ({
@@ -72,6 +75,71 @@ export const useHabits = create<HabitsState>((set) => ({
         error: true,
         isLoading: false,
       });
+    }
+  },
+  deleteHabit: async (id: string) => {
+    set({ isLoading: true, error: false });
+
+    try {
+      await axios.delete(`/api/habits/${id}`);
+      set((state) => ({
+        habits: state.habits.filter((habit) => habit._id !== id),
+        isLoading: false,
+      }));
+    } catch {
+      set({
+        error: true,
+        isLoading: false,
+      });
+    }
+  },
+
+  completeHabit: async (id: string) => {
+    try {
+      console.log(id);
+      const response = await axios.post(`/api/habits/complete/${id}`);
+      const { streak, maxStreak } = response.data;
+
+      set((state) => ({
+        habits: state.habits.map((habit) =>
+          habit._id === id
+            ? {
+                ...habit,
+                streak,
+                maxStreak,
+                lastCompleted: new Date(),
+                completions: [...habit.completions, new Date()],
+              }
+            : habit
+        ),
+      }));
+    } catch {
+      set({ error: true });
+    }
+  },
+
+  uncompleteHabit: async (id: string) => {
+    try {
+      const response = await axios.delete(`/api/habits/complete/${id}`);
+      const { streak } = response.data;
+
+      set((state) => ({
+        habits: state.habits.map((habit) =>
+          habit._id === id
+            ? {
+                ...habit,
+                streak,
+                lastCompleted: undefined,
+                completions: habit.completions.filter(
+                  (date) =>
+                    new Date(date).toDateString() !== new Date().toDateString()
+                ),
+              }
+            : habit
+        ),
+      }));
+    } catch {
+      set({ error: true });
     }
   },
 }));
