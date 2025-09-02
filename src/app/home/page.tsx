@@ -2,14 +2,16 @@
 
 import { AnimatedThemeToggler } from "@/components/magicui/animated-theme-toggler";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Info, TrendingUp, X } from "lucide-react";
 import Calendar04 from "@/components/calendar-04";
 import { useHabits } from "@/store/useHabits";
+
 import Habit from "@/store/useHabits";
 import PomodoroTimer from "@/components/PomodoroTimer";
+import { initUserStats } from "@/lib/action";
 
 export default function PrivatePage() {
   const { data: session, status } = useSession();
@@ -34,6 +36,10 @@ export default function PrivatePage() {
     completeHabit,
     uncompleteHabit,
   } = useHabits();
+
+  useEffect(() => {
+    initUserStats();
+  }, []);
 
   useEffect(() => {
     if (status === "loading") return;
@@ -306,7 +312,10 @@ export default function PrivatePage() {
       <div>
         <nav className="bg-background shadow-sm border-b border-border px-8 py-4">
           <div className="flex justify-between items-center">
-            <div className="flex items-center gap-2">
+            <div
+              className="flex items-center gap-2 cursor-pointer"
+              onClick={() => redirect("/")}
+            >
               <h1 className="text-xl font-semibold text-foreground">TrackIt</h1>
               <TrendingUp size={40} />
             </div>
@@ -362,48 +371,54 @@ export default function PrivatePage() {
                 ) : (
                   <div className="space-y-3 overflow-y-auto h-[74vh] w-[30vw] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-green-400 dark:[&::-webkit-scrollbar-thumb]:bg-green-500 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-green-500 dark:hover:[&::-webkit-scrollbar-thumb]:bg-green-600">
                     {habits.map((habit) => (
-                        <div
+                      <div
                         key={habit._id}
                         className=" border border-border rounded-lg bg-card p-3"
-                        >
+                      >
                         <div className="flex items-center gap-3 p-3">
                           <input
-                          type="checkbox"
-                          className="w-5 h-5 rounded border-border"
-                          checked={isCompletedToday(habit)}
-                          onChange={(e) =>
-                            handleCheckboxChange(habit, e.target.checked)
-                          }
+                            type="checkbox"
+                            className="w-5 h-5 rounded border-border"
+                            checked={isCompletedToday(habit)}
+                            onChange={(e) =>
+                              handleCheckboxChange(habit, e.target.checked)
+                            }
                           />
-                          <span className={`flex-1 text-foreground ${isCompletedToday(habit) ? 'line-through opacity-60' : ''}`}>
-                          {habit.title}
+                          <span
+                            className={`flex-1 text-foreground ${
+                              isCompletedToday(habit)
+                                ? "line-through opacity-60"
+                                : ""
+                            }`}
+                          >
+                            {habit.title}
                           </span>
 
                           <span className="text-sm text-muted-foreground">
-                          Streak: {habit.streak}
+                            Streak: {habit.streak}
                           </span>
                           <button
-                          className="text-muted-foreground hover:text-foreground transition-colors p-1"
-                          onClick={() => setSelectedHabit(habit)}
+                            className="text-muted-foreground hover:text-foreground transition-colors p-1"
+                            onClick={() => setSelectedHabit(habit)}
                           >
-                          <Info />
+                            <Info />
                           </button>
                         </div>
                         <div>
                           {habit.tags && habit.tags.length > 0 && (
-                          <div className="flex flex-wrap gap-1">
-                            {habit.tags.map((tag, index) => (
-                            <span
-                              key={index}
-                              className="bg-green-100 dark:bg-green-900 dark:text-white text-xs px-2 py-1 rounded"
-                            >
-                              {tag}
-                            </span>
-                            ))}
-                          </div>
+                            <div className="flex flex-wrap gap-1">
+                              {habit.tags.map((tag, index) => (
+                                <span
+                                  key={index}
+                                  className="bg-green-100 dark:bg-green-900 dark:text-white text-xs px-2 py-1 rounded"
+                                >
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
                           )}
                         </div>
-                        </div>
+                      </div>
                     ))}
                     {habits.length === 0 && (
                       <div className="text-muted-foreground text-center py-8">
@@ -415,7 +430,7 @@ export default function PrivatePage() {
                 )}
               </div>
             </div>
-            <PomodoroTimer  />
+            <PomodoroTimer />
             <div className="w-[25%] flex justify-end">
               <Calendar04 />
             </div>

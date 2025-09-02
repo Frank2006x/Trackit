@@ -82,6 +82,7 @@ export const useHabits = create<HabitsState>((set) => ({
 
     try {
       await axios.delete(`/api/habits/${id}`);
+      axios.post("/api/userStats/xp", { xp: -10 });
       set((state) => ({
         habits: state.habits.filter((habit) => habit._id !== id),
         isLoading: false,
@@ -99,6 +100,7 @@ export const useHabits = create<HabitsState>((set) => ({
       console.log(id);
       const response = await axios.post(`/api/habits/complete/${id}`);
       const { streak, maxStreak } = response.data;
+      axios.post("/api/userStats/xp", { xp: 10 });
 
       set((state) => ({
         habits: state.habits.map((habit) =>
