@@ -1,12 +1,17 @@
 import { Settings } from "lucide-react";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import ElectricBorder from "./ElectricBorder";
+import axios from "axios";
 const DEFAULT_MODES = [
   { label: "Pomodoro", duration: 25 * 60 },
   { label: "Short Break", duration: 5 * 60 },
 ];
 
-const PomodoroTimer = () => {
+interface PomodoroTimerProps {
+  onTimerAction?: () => void;
+}
+
+const PomodoroTimer = ({ onTimerAction }: PomodoroTimerProps) => {
   const [modes, setModes] = useState(DEFAULT_MODES);
   const [mode, setMode] = useState(0);
   const [timeLeft, setTimeLeft] = useState(modes[0].duration);
@@ -16,6 +21,31 @@ const PomodoroTimer = () => {
   const [tempShortBreak, setTempShortBreak] = useState(5);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [sessionCount, setSessionCount] = useState(1);
+  const [elapsedSeconds, setElapsedSeconds] = useState<number>(0);
+  const [currentXp, setCurrentXp] = useState<number>(0);
+
+  const fetchXp = useCallback(async () => {
+    try {
+      const response = await axios.get("/api/userStats/stats");
+      setCurrentXp(response.data.totalXp || 0);
+    } catch (error) {
+      console.error("Failed to fetch XP:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchXp();
+  }, [fetchXp]);
+
+  const addXp = useCallback(async () => {
+    try {
+      console.log("Adding 3 XP!");
+      await axios.post("/api/userStats/xp", { xp: 3 });
+      setCurrentXp((prev) => prev + 3);
+    } catch (error) {
+      console.error("Failed to add XP:", error);
+    }
+  }, []);
 
   useEffect(() => {
     setTimeLeft(modes[mode].duration);
@@ -26,9 +56,18 @@ const PomodoroTimer = () => {
     if (isActive && timeLeft > 0) {
       intervalRef.current = setInterval(() => {
         setTimeLeft((time) => time - 1);
+        setElapsedSeconds((elapsed) => {
+          const newElapsed = elapsed + 1;
+          // Add XP every 5 seconds (change to 300 for production)
+          if (newElapsed % 5 === 0) {
+            addXp();
+          }
+          return newElapsed;
+        });
       }, 1000);
     } else if (timeLeft === 0) {
       setIsActive(false);
+      setElapsedSeconds(0);
       if (mode === 0) {
         setSessionCount((c) => c + 1);
         setMode(1);
@@ -45,7 +84,7 @@ const PomodoroTimer = () => {
         clearInterval(intervalRef.current);
       }
     };
-  }, [isActive, timeLeft, mode]);
+  }, [isActive, timeLeft, mode, addXp]);
 
   const handleModeChange = (idx: number) => {
     setMode(idx);
@@ -56,13 +95,18 @@ const PomodoroTimer = () => {
   const toggleTimer = () => {
     setIsActive((a) => !a);
     setChaos((prev) => !prev);
+    fetchXp(); // Refresh XP when start/pause is pressed
+    onTimerAction?.(); // Trigger parent fetch
   };
 
   const resetTimer = () => {
     setIsActive(false);
     setTimeLeft(modes[mode].duration);
+    setElapsedSeconds(0); // Reset elapsed seconds when manually reset
     if (mode === 0) setSessionCount(1);
     setChaos(false);
+    fetchXp(); // Refresh XP when reset is pressed
+    onTimerAction?.(); // Trigger parent fetch
   };
 
   const saveSettings = () => {

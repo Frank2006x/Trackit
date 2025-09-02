@@ -60,13 +60,13 @@ export async function DELETE(
   habit.completions = habit.completions.filter(
     (date: Date) => date.toISOString().split("T")[0] !== today
   );
-  // Set lastCompleted to the latest remaining completion, if any
+  
   if (habit.completions.length > 0) {
     habit.lastCompleted = habit.completions[habit.completions.length - 1];
   } else {
     habit.lastCompleted = undefined;
   }
-  // streak system removed
+  
   await habit.save();
 
   return NextResponse.json({

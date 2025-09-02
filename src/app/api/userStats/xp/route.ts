@@ -13,9 +13,15 @@ export async function POST(req: NextRequest) {
 
     const { userId } = await SessionModel.findOne({ sessionToken: token });
 
+    const today = new Date();
+    const startOfDay = new Date(today.setHours(0, 0, 0, 0));
+
     const stats = await UserStats.findOneAndUpdate(
       { userId: userId },
-      { $inc: { totalXp: xp } },
+      {
+        $inc: { totalXp: xp },
+        $push: { xpHistory: { date: startOfDay, xp: xp } },
+      },
       { new: true, upsert: true }
     );
 

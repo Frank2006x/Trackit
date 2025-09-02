@@ -16,11 +16,13 @@ import { NumberTicker } from "@/components/magicui/number-ticker";
 
 export default function PrivatePage() {
   const [userStats, setUserStats] = useState<any>(null);
+
+  const fetchStats = async () => {
+    const stats = await getUserStats();
+    setUserStats(stats);
+  };
+
   useEffect(() => {
-    const fetchStats = async () => {
-      const stats = await getUserStats();
-      setUserStats(stats);
-    };
     fetchStats();
   }, []);
 
@@ -48,8 +50,11 @@ export default function PrivatePage() {
   } = useHabits();
 
   useEffect(() => {
-    initUserStats();
-    markUserOnline();
+    async function init() {
+      await initUserStats();
+      await markUserOnline();
+    }
+    init();
   }, []);
 
   useEffect(() => {
@@ -75,8 +80,7 @@ export default function PrivatePage() {
     } else {
       await uncompleteHabit(habit._id);
     }
-    const stats = await getUserStats();
-    setUserStats(stats);
+    await fetchStats();
   };
 
   const handleSubmitHabit = async (e: React.FormEvent) => {
@@ -422,7 +426,7 @@ export default function PrivatePage() {
                 )}
               </div>
             </div>
-            <PomodoroTimer />
+            <PomodoroTimer onTimerAction={fetchStats} />
             <div className="w-[25%] flex flex-col items-end ">
               <Calendar04 />
               {userStats ? (

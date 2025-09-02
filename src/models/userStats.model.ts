@@ -5,6 +5,7 @@ export interface IUserStats extends Document {
   onlineDays: Date[];
   activeDays: number;
   totalXp: number;
+  xpHistory: { date: Date; xp: number }[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -15,6 +16,12 @@ const UserStatsSchema: Schema = new Schema(
     onlineDays: [{ type: Date, required: true }],
     activeDays: { type: Number, required: true, default: 0 },
     totalXp: { type: Number, required: true, default: 0 },
+    xpHistory: [
+      {
+        date: { type: Date, required: true },
+        xp: { type: Number, required: true },
+      },
+    ],
   },
   { timestamps: true }
 );
