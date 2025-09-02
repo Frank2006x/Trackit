@@ -1,6 +1,6 @@
 import { Settings } from "lucide-react";
 import React, { useState, useEffect, useRef } from "react";
-
+import ElectricBorder from "./ElectricBorder";
 const DEFAULT_MODES = [
   { label: "Pomodoro", duration: 25 * 60 },
   { label: "Short Break", duration: 5 * 60 },
@@ -55,12 +55,14 @@ const PomodoroTimer = () => {
 
   const toggleTimer = () => {
     setIsActive((a) => !a);
+    setChaos((prev) => !prev);
   };
 
   const resetTimer = () => {
     setIsActive(false);
     setTimeLeft(modes[mode].duration);
     if (mode === 0) setSessionCount(1);
+    setChaos(false);
   };
 
   const saveSettings = () => {
@@ -86,60 +88,69 @@ const PomodoroTimer = () => {
       .toString()
       .padStart(2, "0")}`;
   };
+  const [Chaos, setChaos] = useState(false);
 
   return (
     <div className="align-center ">
-      <div className="min-h-auto w-120 mt-25 flex items-center justify-center bg-background relative">
-        <div className="bg-card bg-opacity-95 rounded-2xl px-8 pt-10 pb-6 shadow-lg max-w-md w-full flex flex-col items-center border border-border">
-          <div>
-            <div className="flex  justify-evenly gap-2 w-full mb-6">
-              {modes.map((m, idx) => (
-                <button
-                  key={m.label}
-                  className={`px-4 py-1.5 rounded-md text-lg transition font-medium focus:outline-none ${
-                    mode === idx
-                      ? "bg-green-600 text-white opacity-100 font-semibold"
-                      : "bg-transparent text-muted-foreground opacity-70 hover:text-muted-foreground hover:bg-green-50"
-                  }`}
-                  onClick={() => handleModeChange(idx)}
-                  tabIndex={0}
-                >
-                  {m.label}
-                </button>
-              ))}
+      <div className="min-h-auto min-w-120 mt-25 flex items-center justify-center bg-background relative">
+        <ElectricBorder
+          color="#34D399"
+          speed={Chaos == false ? 0 : 2}
+          chaos={Chaos == false ? 0 : 1.5}
+          thickness={Chaos == false ? 0 : 4}
+          style={{ borderRadius: Chaos == false ? 1 : 20 }}
+        >
+          <div className="bg-card min-w-120 bg-opacity-95 rounded-2xl px-8 pt-10 pb-6 shadow-lg max-w-md w-full flex flex-col items-center border border-border">
+            <div>
+              <div className="flex  justify-evenly gap-2 w-full mb-6">
+                {modes.map((m, idx) => (
+                  <button
+                    key={m.label}
+                    className={`px-4 py-1.5 rounded-md text-lg transition font-medium focus:outline-none ${
+                      mode === idx
+                        ? "bg-green-600 text-white opacity-100 font-semibold"
+                        : "bg-transparent text-muted-foreground opacity-70 hover:text-muted-foreground hover:bg-green-50"
+                    }`}
+                    onClick={() => handleModeChange(idx)}
+                    tabIndex={0}
+                  >
+                    {m.label}
+                  </button>
+                ))}
+              </div>
+              <button
+                className="absolute right-10 top-4 text-muted-foreground hover:text-foreground focus:outline-none"
+                onClick={() => setShowSettings(true)}
+              >
+                <Settings />
+              </button>
             </div>
-            <button
-              className="absolute right-10 top-4 text-muted-foreground hover:text-foreground focus:outline-none"
-              onClick={() => setShowSettings(true)}
-            >
-              <Settings />
-            </button>
-          </div>
 
-          <div className="text-foreground text-[6rem] font-bold mb-6 tracking-widest select-none">
-            {formatTime(timeLeft)}
-          </div>
+            <div className="text-foreground text-[6rem] font-bold mb-6 tracking-widest select-none">
+              {formatTime(timeLeft)}
+            </div>
 
-          <div className="flex gap-5 mb-5">
-            <button
-              className="bg-green-600 hover:bg-green-700 active:bg-green-800 text-white rounded-lg text-2xl font-semibold px-10 py-3 shadow-md transition focus:outline-none focus:ring-2 focus:ring-green-500"
-              onClick={toggleTimer}
-            >
-              {isActive ? "Pause" : "Start"}
-            </button>
-            <button
-              className="bg-green-100 hover:bg-green-200 active:bg-green-300 text-green-800 border border-green-300 rounded-lg text-2xl font-semibold px-10 py-3 shadow-md transition focus:outline-none focus:ring-2 focus:ring-green-500"
-              onClick={resetTimer}
-            >
-              Reset
-            </button>
-          </div>
-          <div className="text-foreground text-center mb-5">
-            <div className="text-lg mt-1">
-              {mode === 0 ? "Time to focus!" : "Take a break!"}
+            <div className="flex gap-5 mb-5">
+              <button
+                className="bg-green-600 hover:bg-green-700  active:bg-green-800 text-white rounded-lg text-2xl font-semibold px-10 py-3 shadow-md transition focus:outline-none focus:ring-2 focus:ring-green-500"
+                onClick={toggleTimer}
+              >
+                {isActive ? "Pause" : "Start"}
+              </button>
+              <button
+                className="bg-green-100 hover:bg-green-200 active:bg-green-300 text-green-800 border border-green-300 rounded-lg text-2xl font-semibold px-10 py-3 shadow-md transition focus:outline-none focus:ring-2 focus:ring-green-500"
+                onClick={resetTimer}
+              >
+                Reset
+              </button>
+            </div>
+            <div className="text-foreground text-center mb-5">
+              <div className="text-lg mt-1">
+                {mode === 0 ? "Time to focus!" : "Take a break!"}
+              </div>
             </div>
           </div>
-        </div>
+        </ElectricBorder>
       </div>
 
       {showSettings && (

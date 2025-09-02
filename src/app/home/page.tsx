@@ -362,48 +362,48 @@ export default function PrivatePage() {
                 ) : (
                   <div className="space-y-3 overflow-y-auto h-[74vh] w-[30vw] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-green-400 dark:[&::-webkit-scrollbar-thumb]:bg-green-500 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-green-500 dark:hover:[&::-webkit-scrollbar-thumb]:bg-green-600">
                     {habits.map((habit) => (
-                      <div
+                        <div
                         key={habit._id}
                         className=" border border-border rounded-lg bg-card p-3"
-                      >
+                        >
                         <div className="flex items-center gap-3 p-3">
                           <input
-                            type="checkbox"
-                            className="w-5 h-5 rounded border-border"
-                            checked={isCompletedToday(habit)}
-                            onChange={(e) =>
-                              handleCheckboxChange(habit, e.target.checked)
-                            }
+                          type="checkbox"
+                          className="w-5 h-5 rounded border-border"
+                          checked={isCompletedToday(habit)}
+                          onChange={(e) =>
+                            handleCheckboxChange(habit, e.target.checked)
+                          }
                           />
-                          <span className="flex-1 text-foreground">
-                            {habit.title}
+                          <span className={`flex-1 text-foreground ${isCompletedToday(habit) ? 'line-through opacity-60' : ''}`}>
+                          {habit.title}
                           </span>
 
                           <span className="text-sm text-muted-foreground">
-                            Streak: {habit.streak}
+                          Streak: {habit.streak}
                           </span>
                           <button
-                            className="text-muted-foreground hover:text-foreground transition-colors p-1"
-                            onClick={() => setSelectedHabit(habit)}
+                          className="text-muted-foreground hover:text-foreground transition-colors p-1"
+                          onClick={() => setSelectedHabit(habit)}
                           >
-                            <Info />
+                          <Info />
                           </button>
                         </div>
                         <div>
                           {habit.tags && habit.tags.length > 0 && (
-                            <div className="flex flex-wrap gap-1">
-                              {habit.tags.map((tag, index) => (
-                                <span
-                                  key={index}
-                                  className="bg-green-100 dark:bg-green-900 dark:text-white text-xs px-2 py-1 rounded"
-                                >
-                                  {tag}
-                                </span>
-                              ))}
-                            </div>
+                          <div className="flex flex-wrap gap-1">
+                            {habit.tags.map((tag, index) => (
+                            <span
+                              key={index}
+                              className="bg-green-100 dark:bg-green-900 dark:text-white text-xs px-2 py-1 rounded"
+                            >
+                              {tag}
+                            </span>
+                            ))}
+                          </div>
                           )}
                         </div>
-                      </div>
+                        </div>
                     ))}
                     {habits.length === 0 && (
                       <div className="text-muted-foreground text-center py-8">
