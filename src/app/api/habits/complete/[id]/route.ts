@@ -31,22 +31,11 @@ export async function POST(
   habit.completions.push(new Date());
   habit.lastCompleted = new Date();
 
-  if (
-    last &&
-    new Date(today).getTime() - new Date(last).getTime() === 86400000
-  ) {
-    habit.streak += 1;
-  } else {
-    habit.streak = 1;
-  }
-
-  habit.maxStreak = Math.max(habit.maxStreak, habit.streak);
+  // streak system removed
   await habit.save();
 
   return NextResponse.json({
     message: "Habit completed",
-    streak: habit.streak,
-    maxStreak: habit.maxStreak,
   });
 }
 
@@ -71,12 +60,16 @@ export async function DELETE(
   habit.completions = habit.completions.filter(
     (date: Date) => date.toISOString().split("T")[0] !== today
   );
-  habit.lastCompleted = undefined;
-  habit.streak = Math.max(0, habit.streak - 1);
+  // Set lastCompleted to the latest remaining completion, if any
+  if (habit.completions.length > 0) {
+    habit.lastCompleted = habit.completions[habit.completions.length - 1];
+  } else {
+    habit.lastCompleted = undefined;
+  }
+  // streak system removed
   await habit.save();
 
   return NextResponse.json({
     message: "Completion removed",
-    streak: habit.streak,
   });
 }

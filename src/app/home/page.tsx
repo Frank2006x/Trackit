@@ -227,24 +227,6 @@ export default function PrivatePage() {
             <div className="space-y-3">
               <div className="flex justify-between">
                 <span className="text-sm text-muted-foreground">
-                  Current Streak:
-                </span>
-                <span className="text-sm font-medium">
-                  {selectedHabit?.streak}
-                </span>
-              </div>
-
-              <div className="flex justify-between">
-                <span className="text-sm text-muted-foreground">
-                  Max Streak:
-                </span>
-                <span className="text-sm font-medium">
-                  {selectedHabit?.maxStreak}
-                </span>
-              </div>
-
-              <div className="flex justify-between">
-                <span className="text-sm text-muted-foreground">
                   Total Completions:
                 </span>
                 <span className="text-sm font-medium">
@@ -407,9 +389,6 @@ export default function PrivatePage() {
                             {habit.title}
                           </span>
 
-                          <span className="text-sm text-muted-foreground">
-                            Streak: {habit.streak}
-                          </span>
                           <button
                             className="text-muted-foreground hover:text-foreground transition-colors p-1"
                             onClick={() => setSelectedHabit(habit)}

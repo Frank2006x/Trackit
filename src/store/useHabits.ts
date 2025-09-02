@@ -7,13 +7,12 @@ export default interface Habit {
   title: string;
   description?: string;
   tags: string[];
-  streak: number;
-  maxStreak: number;
   lastCompleted?: Date;
   completions: Date[];
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
+  // streak and maxStreak removed
 }
 
 interface HabitsState {
@@ -99,7 +98,6 @@ export const useHabits = create<HabitsState>((set) => ({
     try {
       console.log(id);
       const response = await axios.post(`/api/habits/complete/${id}`);
-      const { streak, maxStreak } = response.data;
       axios.post("/api/userStats/xp", { xp: 10 });
 
       set((state) => ({
@@ -107,8 +105,6 @@ export const useHabits = create<HabitsState>((set) => ({
           habit._id === id
             ? {
                 ...habit,
-                streak,
-                maxStreak,
                 lastCompleted: new Date(),
                 completions: [...habit.completions, new Date()],
               }
@@ -123,24 +119,32 @@ export const useHabits = create<HabitsState>((set) => ({
   uncompleteHabit: async (id: string) => {
     try {
       const response = await axios.delete(`/api/habits/complete/${id}`);
-      const { streak } = response.data;
       axios.post("/api/userStats/xp", { xp: -10 });
 
-      set((state) => ({
-        habits: state.habits.map((habit) =>
-          habit._id === id
-            ? {
-                ...habit,
-                streak,
-                lastCompleted: undefined,
-                completions: habit.completions.filter(
-                  (date) =>
-                    new Date(date).toDateString() !== new Date().toDateString()
-                ),
-              }
-            : habit
-        ),
-      }));
+      set((state) => {
+        const habit = state.habits.find((h) => h._id === id);
+        if (!habit) return state;
+
+        const newCompletions = habit.completions.filter(
+          (date) => new Date(date).toDateString() !== new Date().toDateString()
+        );
+
+        const lastCompleted =
+          newCompletions.length > 0
+            ? newCompletions[newCompletions.length - 1]
+            : undefined;
+        return {
+          habits: state.habits.map((h) =>
+            h._id === id
+              ? {
+                  ...h,
+                  lastCompleted,
+                  completions: newCompletions,
+                }
+              : h
+          ),
+        };
+      });
     } catch {
       set({ error: true });
     }
