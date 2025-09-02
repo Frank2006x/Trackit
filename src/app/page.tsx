@@ -1,5 +1,5 @@
 import Image from "next/image";
-import SignInButton from "./SignInButton";
+import SignInButton from "../components/SignInButton";
 import Link from "next/link";
 
 export default function Home() {
@@ -30,7 +30,7 @@ export default function Home() {
 
         <div className="flex flex-col gap-4 items-center">
           <SignInButton />
-          <Link href="/private" className="underline text-blue-600">
+          <Link href="/home" className="underline text-blue-600">
             Go to Private Page
           </Link>
         </div>

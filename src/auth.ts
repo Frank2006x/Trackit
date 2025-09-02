@@ -4,7 +4,7 @@ import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import client from "./lib/db";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  adapter: MongoDBAdapter(client),
+  adapter: MongoDBAdapter(client.connect()),
   providers: [
     Google({
       clientId: process.env.AUTH_GOOGLE_ID!,
@@ -20,3 +20,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     signIn: "/",
   },
 });
+
+
+export const authOptions = {
+  adapter: MongoDBAdapter(client.connect()),
+  providers: [
+    Google({
+      clientId: process.env.AUTH_GOOGLE_ID!,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET!,
+      authorization: {
+        params: {
+          prompt: "select_account",
+        },
+      },
+    }),
+  ],
+  pages: {
+    signIn: "/",
+  },
+};
