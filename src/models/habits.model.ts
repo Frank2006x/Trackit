@@ -4,6 +4,7 @@ export interface IHabit extends Document {
   userId: string;
   title: string;
   description?: string;
+  tags: string[];
   createdAt: Date;
   updatedAt: Date;
   streak: number;
@@ -18,6 +19,7 @@ const HabitSchema: Schema = new Schema(
     userId: { type: String, required: true, index: true },
     title: { type: String, required: true },
     description: { type: String },
+    tags: { type: [String], default: [] },
     streak: { type: Number, default: 0 },
     maxStreak: { type: Number, default: 0 },
     lastCompleted: { type: Date },

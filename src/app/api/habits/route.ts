@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const habits = await Habit.find({ userId });
-  return NextResponse.json({ msg: habits }, { status: 200 });
+  return NextResponse.json({ habits: habits }, { status: 200 });
 }
 
 export async function POST(req: NextRequest) {
