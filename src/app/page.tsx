@@ -22,7 +22,7 @@ export default function Home() {
     if (status === "authenticated") {
       redirect("/home");
     } else {
-      signIn("google");
+      signIn("google", { callbackUrl: href });
     }
   };
 
