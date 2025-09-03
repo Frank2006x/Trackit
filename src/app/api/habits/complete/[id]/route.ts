@@ -7,7 +7,7 @@ import SessionModel from "@/models/session.model";
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   await connectDB();
 
@@ -41,7 +41,7 @@ export async function POST(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   await connectDB();
 
@@ -60,13 +60,13 @@ export async function DELETE(
   habit.completions = habit.completions.filter(
     (date: Date) => date.toISOString().split("T")[0] !== today
   );
-  
+
   if (habit.completions.length > 0) {
     habit.lastCompleted = habit.completions[habit.completions.length - 1];
   } else {
     habit.lastCompleted = undefined;
   }
-  
+
   await habit.save();
 
   return NextResponse.json({

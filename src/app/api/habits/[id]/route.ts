@@ -4,9 +4,10 @@ import connectDB from "@/lib/mongoose";
 import Habit from "@/models/habits.model";
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   await connectDB();
+  const { id } = await params;
   const token =
     req.cookies.get("authjs.session-token")?.value ||
     req.cookies.get("__Secure-authjs.session-token")?.value;
@@ -14,6 +15,6 @@ export async function DELETE(
   const { userId } = await SessionModel.findOne({ sessionToken: token });
   if (!userId)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  await Habit.findOneAndDelete({ _id: params.id, userId: userId });
+  await Habit.findOneAndDelete({ _id: id, userId: userId });
   return NextResponse.json({ message: "Habit deleted" });
 }

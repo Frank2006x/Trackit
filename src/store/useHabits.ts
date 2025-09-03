@@ -96,7 +96,7 @@ export const useHabits = create<HabitsState>((set) => ({
 
   completeHabit: async (id: string) => {
     try {
-      const response = await axios.post(`/api/habits/complete/${id}`);
+      await axios.post(`/api/habits/complete/${id}`);
       axios.post("/api/userStats/xp", { xp: 10 });
 
       set((state) => ({
@@ -117,7 +117,7 @@ export const useHabits = create<HabitsState>((set) => ({
 
   uncompleteHabit: async (id: string) => {
     try {
-      const response = await axios.delete(`/api/habits/complete/${id}`);
+      await axios.delete(`/api/habits/complete/${id}`);
       axios.post("/api/userStats/xp", { xp: -10 });
 
       set((state) => {

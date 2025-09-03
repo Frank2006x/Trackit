@@ -22,26 +22,3 @@ export async function GET(req: NextRequest) {
     );
   }
 }
-
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: { userId: string } }
-) {
-  await connectDB();
-  try {
-    const body = await req.json();
-    const stats = await UserStats.findOneAndUpdate(
-      { userId: params.userId },
-      body,
-      { new: true }
-    );
-    if (!stats)
-      return NextResponse.json({ message: "Not found" }, { status: 404 });
-    return NextResponse.json(stats);
-  } catch {
-    return NextResponse.json(
-      { error: "Failed to update user stats" },
-      { status: 500 }
-    );
-  }
-}
