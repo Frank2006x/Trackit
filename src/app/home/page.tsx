@@ -323,10 +323,16 @@ export default function PrivatePage() {
               className="flex items-center gap-5 cursor-pointer"
               onClick={() => router.push("/home/profile")}
             >
-              <span className="text-sm font-medium text-foreground">
+              <span
+                className="text-sm font-medium text-foreground"
+                onClick={() => router.push("/home/profile")}
+              >
                 {session.user?.name}
               </span>
-              <div className="rounded-full overflow-hidden mr-4">
+              <div
+                className="rounded-full overflow-hidden mr-4"
+                onClick={() => router.push("/home/profile")}
+              >
                 <Image
                   src={session.user?.image || "/default-avatar.png"}
                   width={40}
