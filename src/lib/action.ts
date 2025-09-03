@@ -1,3 +1,4 @@
+import axios from "axios";
 export const markUserOnline = async () => {
   try {
     await axios.post("/api/userStats/online");
@@ -5,7 +6,6 @@ export const markUserOnline = async () => {
     console.error("Failed to mark user online:", err);
   }
 };
-import axios from "axios";
 export const getUserStats = async () => {
   try {
     const res = await axios.get("/api/userStats/stats");
@@ -22,5 +22,26 @@ export const initUserStats = async () => {
   } catch (err) {
     console.error("Failed to init user stats:", err);
     throw err;
+  }
+};
+
+export const getTopUser = async () => {
+  try {
+    const res = await axios.get("/api/userStats");
+    const allUsers = [];
+
+    for (const userStats of res.data) {
+      const userDetails = await axios.get(`/api/users/${userStats.userId}`);
+      allUsers.push({
+        ...userStats,
+        userInfo: userDetails.data,
+      });
+    }
+
+    console.log("All users data:", allUsers);
+    return allUsers;
+  } catch (err) {
+    console.error("Failed to fetch top user:", err);
+    return null;
   }
 };

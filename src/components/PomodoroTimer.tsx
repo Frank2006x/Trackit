@@ -58,8 +58,8 @@ const PomodoroTimer = ({ onTimerAction }: PomodoroTimerProps) => {
         setTimeLeft((time) => time - 1);
         setElapsedSeconds((elapsed) => {
           const newElapsed = elapsed + 1;
-          // Add XP every 5 seconds (change to 300 for production)
-          if (newElapsed % 5 === 0) {
+
+          if (newElapsed % 300 === 0) {
             addXp();
           }
           return newElapsed;
@@ -95,8 +95,8 @@ const PomodoroTimer = ({ onTimerAction }: PomodoroTimerProps) => {
   const toggleTimer = () => {
     setIsActive((a) => !a);
     setChaos((prev) => !prev);
-    fetchXp(); // Refresh XP when start/pause is pressed
-    onTimerAction?.(); // Trigger parent fetch
+    fetchXp();
+    onTimerAction?.();
   };
 
   const resetTimer = () => {

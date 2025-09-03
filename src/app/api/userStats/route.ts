@@ -36,9 +36,12 @@ export async function POST(req: NextRequest) {
 export async function GET() {
   await connectDB();
   try {
-    const stats = await UserStats.find();
+    const stats = await UserStats.find()
+      .populate('userId', 'name image')
+      .sort({ xp: -1 })
+      .limit(10);
     return NextResponse.json(stats);
-  } catch {
+    } catch {
     return NextResponse.json(
       { error: "Failed to fetch stats" },
       { status: 500 }

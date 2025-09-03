@@ -1,113 +1,202 @@
-import Image from "next/image";
 import SignInButton from "../components/SignInButton";
 import Link from "next/link";
+import { AnimatedThemeToggler } from "@/components/magicui/animated-theme-toggler";
+import { Aurora } from "@/components/magicui/aurora";
+import {
+  TrendingUp,
+  BarChart3,
+  Clock,
+  Target,
+  Users,
+  Star,
+} from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
+    <div className="min-h-screen bg-background relative">
+      <Aurora
+        colorStops={["#3A29FF", "#FF94B4", "#FF3232"]}
+        blend={0.5}
+        amplitude={1.0}
+        speed={0.5}
+        className="z-10"
+      />
+      <div className="relative z-10">
+        {/* Header */}
+        <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
+          <div className="container mx-auto px-6 py-4">
+            <nav className="flex justify-between items-center">
+              <div className="flex items-center gap-2">
+                <TrendingUp size={32} className="text-primary" />
+                <span className="text-2xl font-bold text-foreground">
+                  TrackIt
+                </span>
+              </div>
+              <div className="flex items-center gap-4">
+                <AnimatedThemeToggler className="p-2 rounded-lg hover:bg-muted transition-colors" />
+                <SignInButton />
+              </div>
+            </nav>
+          </div>
+        </header>
 
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+        <main className="container mx-auto px-6 py-20">
+          <div className="text-center max-w-4xl mx-auto">
+            <div className="mb-8">
+              <span className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium mb-6">
+                Now with XP System & Pomodoro Timer
+              </span>
+            </div>
 
-        <div className="flex flex-col gap-4 items-center">
-          <SignInButton />
-          <Link href="/home" className="underline text-blue-600">
-            Go to Private Page
-          </Link>
-        </div>
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+              Track Everything That Matters
+            </h1>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
+              Stay organized and boost your productivity with our powerful
+              tracking solution. Monitor your habits, earn XP, and achieve your
+              goals with focus sessions.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+              <Link
+                href="/home"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 px-8 rounded-lg transition-colors shadow-lg"
+              >
+                Get Started Free
+              </Link>
+              <Link
+                href="#features"
+                className="border border-border hover:bg-muted text-foreground font-semibold py-3 px-8 rounded-lg transition-colors"
+              >
+                Learn More
+              </Link>
+            </div>
+          </div>
+
+          {/* Features Section */}
+          <section id="features" className="mt-20">
+            <h2 className="text-3xl font-bold text-center text-foreground mb-4">
+              Why Choose TrackIt?
+            </h2>
+            <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
+              Everything you need to build better habits and achieve your goals
+            </p>
+
+            <div className="grid md:grid-cols-3 gap-8 mb-20">
+              <div className="text-center p-8 bg-card rounded-xl shadow-sm border border-border hover:shadow-md transition-shadow">
+                <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-6">
+                  <BarChart3 className="w-8 h-8 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold text-foreground mb-3">
+                  Smart Analytics
+                </h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Get insights into your progress with detailed charts and
+                  real-time XP tracking.
+                </p>
+              </div>
+
+              <div className="text-center p-8 bg-card rounded-xl shadow-sm border border-border hover:shadow-md transition-shadow">
+                <div className="w-16 h-16 bg-green-500/10 rounded-xl flex items-center justify-center mx-auto mb-6">
+                  <Clock className="w-8 h-8 text-green-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-foreground mb-3">
+                  Pomodoro Timer
+                </h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Stay focused with built-in Pomodoro timer and earn XP for
+                  every session completed.
+                </p>
+              </div>
+
+              <div className="text-center p-8 bg-card rounded-xl shadow-sm border border-border hover:shadow-md transition-shadow">
+                <div className="w-16 h-16 bg-purple-500/10 rounded-xl flex items-center justify-center mx-auto mb-6">
+                  <Target className="w-8 h-8 text-purple-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-foreground mb-3">
+                  Habit Tracking
+                </h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Build lasting habits with our intuitive tracking system and
+                  gamified experience.
+                </p>
+              </div>
+            </div>
+
+            {/* Additional Features */}
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="bg-card p-8 rounded-xl border border-border">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                    <Users className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-foreground">
+                    Leaderboard
+                  </h3>
+                </div>
+                <p className="text-muted-foreground">
+                  Compete with others and see how you rank on the global
+                  leaderboard. Motivation through friendly competition.
+                </p>
+              </div>
+
+              <div className="bg-card p-8 rounded-xl border border-border">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                    <Star className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-foreground">
+                    XP System
+                  </h3>
+                </div>
+                <p className="text-muted-foreground">
+                  Earn experience points for completing habits and focus
+                  sessions. Track your daily progress and maintain streaks.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          {/* CTA Section */}
+          <section className="text-center py-20 bg-gradient-to-r from-primary/5 to-primary/10 rounded-2xl border border-border mt-20">
+            <h2 className="text-3xl font-bold text-foreground mb-4">
+              Ready to Transform Your Productivity?
+            </h2>
+            <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
+              Join thousands of users who have already improved their habits and
+              achieved their goals with TrackIt.
+            </p>
+            <Link
+              href="/home"
+              className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-4 px-8 rounded-lg transition-colors shadow-lg"
+            >
+              Start Your Journey
+              <TrendingUp size={20} />
+            </Link>
+          </section>
+        </main>
+
+        {/* Footer */}
+        <footer className="bg-muted/30 py-12 mt-20 border-t border-border">
+          <div className="container mx-auto px-6">
+            <div className="text-center">
+              <div className="flex items-center justify-center gap-2 mb-4">
+                <TrendingUp size={24} className="text-primary" />
+                <span className="text-xl font-bold text-foreground">
+                  TrackIt
+                </span>
+              </div>
+              <p className="text-muted-foreground mb-6">
+                Build better habits, one day at a time.
+              </p>
+              <p className="text-sm text-muted-foreground">
+                &copy; 2025 TrackIt. All rights reserved.
+              </p>
+            </div>
+          </div>
+        </footer>
+      </div>
     </div>
   );
 }

@@ -87,7 +87,10 @@ export default function ProfilePage() {
           </button>
           <h1 className="text-3xl font-bold text-foreground ">Profile</h1>
           <div className="flex items-center gap-4">
-            <div className="flex gap-2 bg-card p-2 rounded-xl border-2">
+            <div
+              className="flex gap-2 bg-card p-2 rounded-xl border-2 cursor-pointer"
+              onClick={() => router.push("/home/leaderboard")}
+            >
               <AlignEndHorizontal />
               <p>Leader Board</p>
             </div>
