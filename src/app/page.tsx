@@ -1,7 +1,10 @@
+"use client";
 import SignInButton from "../components/SignInButton";
 import Link from "next/link";
 import { AnimatedThemeToggler } from "@/components/magicui/animated-theme-toggler";
-
+import { useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 const TrendingIcon = () => (
   <svg
     width="32"
@@ -138,6 +141,12 @@ const ArrowIcon = () => (
 );
 
 export default function Home() {
+  const { data: session } = useSession();
+  useEffect(() => {
+    if (session) {
+      redirect("/home");
+    }
+  }, [session]);
   return (
     <div className="min-h-screen bg-background relative">
       <div className="relative z-10">

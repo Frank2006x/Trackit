@@ -17,10 +17,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   pages: {
-    signIn: "/home",
+    signIn: "/",
   },
 });
-
 
 export const authOptions = {
   adapter: MongoDBAdapter(client.connect()),

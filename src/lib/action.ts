@@ -29,6 +29,9 @@ export const getTopUser = async () => {
   try {
     const res = await axios.get("/api/userStats");
     const allUsers = [];
+    res.data.sort(
+      (a: { totalXp: number }, b: { totalXp: number }) => b.totalXp - a.totalXp
+    );
 
     for (const userStats of res.data) {
       const userDetails = await axios.get(`/api/users/${userStats.userId}`);
@@ -38,7 +41,6 @@ export const getTopUser = async () => {
       });
     }
 
-    
     return allUsers;
   } catch (err) {
     console.error("Failed to fetch top user:", err);
