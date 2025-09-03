@@ -1,332 +1,215 @@
 "use client";
-import SignInButton from "../components/SignInButton";
-import Link from "next/link";
-import { AnimatedThemeToggler } from "@/components/magicui/animated-theme-toggler";
-import { useEffect } from "react";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
-const TrendingIcon = () => (
-  <svg
-    width="32"
-    height="32"
-    viewBox="0 0 32 32"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className="text-primary"
-  >
-    <path
-      d="M4 20L12 12L18 18L28 8"
-      stroke="currentColor"
-      strokeWidth="2.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M20 8H28V16"
-      stroke="currentColor"
-      strokeWidth="2.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
-
-const AnalyticsIcon = () => (
-  <svg
-    width="32"
-    height="32"
-    viewBox="0 0 32 32"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <rect x="4" y="18" width="5" height="10" rx="1" fill="currentColor" />
-    <rect x="13" y="12" width="5" height="16" rx="1" fill="currentColor" />
-    <rect x="22" y="6" width="5" height="22" rx="1" fill="currentColor" />
-  </svg>
-);
-
-const TimerIcon = () => (
-  <svg
-    width="32"
-    height="32"
-    viewBox="0 0 32 32"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <circle cx="16" cy="18" r="12" stroke="currentColor" strokeWidth="2" />
-    <path
-      d="M16 10V18L22 22"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-    />
-    <path
-      d="M12 6L20 6"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-    />
-  </svg>
-);
-
-const TargetIcon = () => (
-  <svg
-    width="32"
-    height="32"
-    viewBox="0 0 32 32"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <circle cx="16" cy="16" r="12" stroke="currentColor" strokeWidth="2" />
-    <circle cx="16" cy="16" r="8" stroke="currentColor" strokeWidth="2" />
-    <circle cx="16" cy="16" r="4" stroke="currentColor" strokeWidth="2" />
-    <circle cx="16" cy="16" r="1" fill="currentColor" />
-  </svg>
-);
-
-const UsersIcon = () => (
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <circle cx="9" cy="7" r="4" stroke="currentColor" strokeWidth="2" />
-    <path
-      d="M3 21V19C3 16.7909 4.79086 15 7 15H11C13.2091 15 15 16.7909 15 19V21"
-      stroke="currentColor"
-      strokeWidth="2"
-    />
-    <circle cx="17" cy="7" r="3" stroke="currentColor" strokeWidth="2" />
-    <path
-      d="M21 21V19C21 17.3431 19.6569 16 18 16H17"
-      stroke="currentColor"
-      strokeWidth="2"
-    />
-  </svg>
-);
-
-const StarIcon = () => (
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
-      fill="currentColor"
-    />
-  </svg>
-);
-
-const ArrowIcon = () => (
-  <svg
-    width="20"
-    height="20"
-    viewBox="0 0 20 20"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      d="M4 10L16 10M16 10L10 4M16 10L10 16"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
+import { useEffect } from "react";
+import Link from "next/link";
+import SignInButton from "../components/SignInButton";
+import { AnimatedThemeToggler } from "@/components/magicui/animated-theme-toggler";
+import WavesBackground from "@/components/Waves";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { TrendingUp } from "lucide-react";
 
 export default function Home() {
-  const { data: session } = useSession();
-  useEffect(() => {
-    if (session) {
+  const { data: session, status } = useSession();
+
+  const handleProtectedNavigation = (href: string) => {
+    if (status === "authenticated") {
       redirect("/home");
+    } else {
+      signIn("google");
     }
-  }, [session]);
+  };
+
+  const features = [
+    {
+      title: "Smart Analytics",
+      description:
+        "Get insights into your progress with detailed charts and real-time XP tracking.",
+    },
+    {
+      title: "Pomodoro Timer",
+      description:
+        "Stay focused with built-in Pomodoro timer and earn XP for every session completed.",
+    },
+    {
+      title: "Habit Tracking",
+      description:
+        "Build lasting habits with our intuitive tracking system and gamified experience.",
+    },
+    {
+      title: "Leaderboard",
+      description:
+        "Compete with others and see how you rank on the global leaderboard.",
+    },
+    {
+      title: "XP System",
+      description:
+        "Earn experience points for completing habits and focus sessions.",
+    },
+  ];
+
+  const stats = [
+    { value: "10K+", label: "Active Users" },
+    { value: "500K+", label: "Habits Tracked" },
+    { value: "2M+", label: "Pomodoro Sessions" },
+    { value: "98%", label: "Satisfaction Rate" },
+  ];
+
   return (
-    <div className="min-h-screen bg-background relative">
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      <div className="absolute inset-0 z-10">
+        <WavesBackground
+          lineColor="hsl(var(--background))"
+          backgroundColor="rgba(34, 197, 94, 0.2)"
+          waveSpeedX={0.02}
+          waveSpeedY={0}
+          waveAmpX={40}
+          waveAmpY={20}
+          friction={0}
+          tension={0}
+          maxCursorMove={0}
+          xGap={12}
+          yGap={36}
+        />
+      </div>
+
       <div className="relative z-10">
-        <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
-          <div className="container mx-auto px-6 py-4">
-            <nav className="flex justify-between items-center">
-              <div className="flex items-center gap-2">
-                <TrendingIcon />
-                <span className="text-2xl font-bold text-foreground">
-                  TrackIt
-                </span>
-              </div>
-              <div className="flex items-center gap-4">
-                <AnimatedThemeToggler className="p-2 rounded-lg hover:bg-muted transition-colors" />
-                <SignInButton />
-              </div>
-            </nav>
+        <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="container flex h-16 items-center justify-between">
+            <div className="flex ml-3 gap-2 items-center">
+              <span className="text-2xl font-bold ">TrackIt</span>
+              <TrendingUp size={40} />
+            </div>
+
+            <div className="flex items-center gap-4">
+              <AnimatedThemeToggler className="p-2 rounded-lg hover:bg-muted transition-colors" />
+              <SignInButton />
+            </div>
           </div>
         </header>
 
-        <main className="container mx-auto px-6 py-20">
-          <div className="text-center max-w-4xl mx-auto">
-            <div className="mb-8">
-              <span className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium mb-6">
+        <main>
+          <section className="container flex flex-col gap-8 py-24 text-center">
+            <div>
+              <div className="mb-6 inline-flex items-center rounded-full border px-3 py-1 text-sm">
                 Now with XP System & Pomodoro Timer
-              </span>
+              </div>
+
+              <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl/none bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+                Track Everything <br className="hidden sm:inline" />
+                That Matters
+              </h1>
+
+              <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl mt-6">
+                Stay organized and boost your productivity with our powerful
+                tracking solution. Monitor your habits, earn XP, and achieve
+                your goals with focus sessions.
+              </p>
             </div>
 
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-              Track Everything That Matters
-            </h1>
-
-            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
-              Stay organized and boost your productivity with our powerful
-              tracking solution. Monitor your habits, earn XP, and achieve your
-              goals with focus sessions.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-              <Link
-                href="/home"
-                className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 px-8 rounded-lg transition-colors shadow-lg"
+            <div className="flex flex-col gap-4 min-[400px]:flex-row justify-center">
+              <button
+                onClick={() => handleProtectedNavigation("/home")}
+                className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-primary text-primary-foreground hover:bg-primary/90 h-11 px-8 py-2"
               >
                 Get Started Free
-              </Link>
+              </button>
               <Link
                 href="#features"
-                className="border border-border hover:bg-muted text-foreground font-semibold py-3 px-8 rounded-lg transition-colors"
+                className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background border border-input hover:bg-accent hover:text-accent-foreground h-11 px-8 py-2"
               >
                 Learn More
               </Link>
             </div>
-          </div>
+          </section>
 
-          <section id="features" className="mt-20">
-            <h2 className="text-3xl font-bold text-center text-foreground mb-4">
-              Why Choose TrackIt?
-            </h2>
-            <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-              Everything you need to build better habits and achieve your goals
-            </p>
-
-            <div className="grid md:grid-cols-3 gap-8 mb-20">
-              <div className="text-center p-8 bg-card rounded-xl shadow-sm border border-border hover:shadow-md transition-shadow">
-                <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-6">
-                  <div className="text-primary">
-                    <AnalyticsIcon />
+          <section className="border-t border-border bg-muted/40 py-12">
+            <div className="container">
+              <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
+                {stats.map((stat, index) => (
+                  <div key={index} className="flex flex-col items-center">
+                    <div className="text-3xl font-bold">{stat.value}</div>
+                    <div className="text-muted-foreground">{stat.label}</div>
                   </div>
-                </div>
-                <h3 className="text-xl font-semibold text-foreground mb-3">
-                  Smart Analytics
-                </h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  Get insights into your progress with detailed charts and
-                  real-time XP tracking.
-                </p>
-              </div>
-
-              <div className="text-center p-8 bg-card rounded-xl shadow-sm border border-border hover:shadow-md transition-shadow">
-                <div className="w-16 h-16 bg-green-500/10 rounded-xl flex items-center justify-center mx-auto mb-6">
-                  <div className="text-green-600">
-                    <TimerIcon />
-                  </div>
-                </div>
-                <h3 className="text-xl font-semibold text-foreground mb-3">
-                  Pomodoro Timer
-                </h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  Stay focused with built-in Pomodoro timer and earn XP for
-                  every session completed.
-                </p>
-              </div>
-
-              <div className="text-center p-8 bg-card rounded-xl shadow-sm border border-border hover:shadow-md transition-shadow">
-                <div className="w-16 h-16 bg-purple-500/10 rounded-xl flex items-center justify-center mx-auto mb-6">
-                  <div className="text-purple-600">
-                    <TargetIcon />
-                  </div>
-                </div>
-                <h3 className="text-xl font-semibold text-foreground mb-3">
-                  Habit Tracking
-                </h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  Build lasting habits with our intuitive tracking system and
-                  gamified experience.
-                </p>
-              </div>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="bg-card p-8 rounded-xl border border-border">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <div className="text-primary">
-                      <UsersIcon />
-                    </div>
-                  </div>
-                  <h3 className="text-xl font-semibold text-foreground">
-                    Leaderboard
-                  </h3>
-                </div>
-                <p className="text-muted-foreground">
-                  Compete with others and see how you rank on the global
-                  leaderboard. Motivation through friendly competition.
-                </p>
-              </div>
-
-              <div className="bg-card p-8 rounded-xl border border-border">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <div className="text-primary">
-                      <StarIcon />
-                    </div>
-                  </div>
-                  <h3 className="text-xl font-semibold text-foreground">
-                    XP System
-                  </h3>
-                </div>
-                <p className="text-muted-foreground">
-                  Earn experience points for completing habits and focus
-                  sessions. Track your daily progress and maintain streaks.
-                </p>
+                ))}
               </div>
             </div>
           </section>
 
-          <section className="text-center py-20 bg-gradient-to-r from-primary/5 to-primary/10 rounded-2xl border border-border mt-20">
-            <h2 className="text-3xl font-bold text-foreground mb-4">
-              Ready to Transform Your Productivity?
-            </h2>
-            <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Join thousands of users who have already improved their habits and
-              achieved their goals with TrackIt.
-            </p>
-            <Link
-              href="/home"
-              className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-4 px-8 rounded-lg transition-colors shadow-lg"
-            >
-              Start Your Journey
-              <ArrowIcon />
-            </Link>
+          <section id="features" className="container py-24">
+            <div className="flex flex-col items-center text-center mb-16">
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+                Why Choose TrackIt?
+              </h2>
+              <p className="max-w-[700px] text-muted-foreground md:text-xl/relaxed mt-4">
+                Everything you need to build better habits and achieve your
+                goals
+              </p>
+            </div>
+
+            <div className="px-8">
+              <Carousel className="w-full max-w-4xl mx-auto">
+                <CarouselContent>
+                  {features.map((feature, index) => (
+                    <CarouselItem
+                      key={index}
+                      className="md:basis-1/2 lg:basis-1/3"
+                    >
+                      <div className="p-1">
+                        <div className="flex flex-col items-center text-center p-6 h-full border rounded-lg bg-card">
+                          <h3 className="text-xl font-semibold mb-2">
+                            {feature.title}
+                          </h3>
+                          <p className="text-muted-foreground">
+                            {feature.description}
+                          </p>
+                        </div>
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious />
+                <CarouselNext />
+              </Carousel>
+            </div>
+          </section>
+
+          <section className="border-t border-border bg-gradient-to-r from-primary/5 to-primary/10 py-24">
+            <div className="container flex flex-col items-center text-center">
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+                Ready to Transform Your Productivity?
+              </h2>
+              <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed mt-4 mb-8">
+                Join thousands of users who have already improved their habits
+                and achieved their goals with TrackIt.
+              </p>
+              <button
+                onClick={() => handleProtectedNavigation("/home")}
+                className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-primary text-primary-foreground hover:bg-primary/90 h-11 px-8 py-2"
+              >
+                Start Your Journey
+              </button>
+            </div>
           </section>
         </main>
 
-        <footer className="bg-muted/30 py-12 mt-20 border-t border-border">
-          <div className="container mx-auto px-6">
-            <div className="text-center">
-              <div className="flex items-center justify-center gap-2 mb-4">
-                <TrendingIcon />
-                <span className="text-xl font-bold text-foreground">
-                  TrackIt
-                </span>
-              </div>
-              <p className="text-muted-foreground mb-6">
-                Build better habits, one day at a time.
-              </p>
-              <p className="text-sm text-muted-foreground">
-                &copy; 2025 TrackIt. All rights reserved.
-              </p>
+        <footer className="border-t border-border bg-muted/30 py-12">
+          <div className="container flex flex-col items-center gap-4 text-center">
+            <div className="flex items-center gap-2">
+              <span className="text-lg font-bold">TrackIt</span>
             </div>
+            <p className="text-muted-foreground">
+              Build better habits, one day at a time.
+            </p>
+            <p className="text-sm text-muted-foreground">
+              &copy; 2025 TrackIt. All rights reserved.
+            </p>
           </div>
         </footer>
       </div>
