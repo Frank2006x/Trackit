@@ -2,8 +2,8 @@
 import { ChartBarInteractive } from "@/components/chart";
 import { AnimatedThemeToggler } from "@/components/magicui/animated-theme-toggler";
 import { getUserStats } from "@/lib/action";
-import { AlignEndHorizontal } from "lucide-react";
-import { useSession } from "next-auth/react";
+import { AlignEndHorizontal, LogOut } from "lucide-react";
+import { useSession, signOut } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -88,12 +88,20 @@ export default function ProfilePage() {
           <h1 className="text-3xl font-bold text-foreground ">Profile</h1>
           <div className="flex items-center gap-4">
             <div
-              className="flex gap-2 bg-card p-2 rounded-xl border-2 cursor-pointer"
+              className="flex gap-2 bg-card p-2 rounded-xl border-2 cursor-pointer hover:bg-muted transition-colors"
               onClick={() => router.push("/home/leaderboard")}
             >
               <AlignEndHorizontal />
               <p>Leader Board</p>
             </div>
+            <button
+              onClick={() => signOut({ callbackUrl: "/" })}
+              className="flex items-center gap-2 px-4 py-2 bg-destructive text-destructive-foreground rounded-lg hover:bg-destructive/90 transition-colors"
+              title="Sign Out"
+            >
+              <LogOut size={18} />
+              <span>Sign Out</span>
+            </button>
             <AnimatedThemeToggler />
           </div>
         </div>

@@ -1,33 +1,151 @@
 import SignInButton from "../components/SignInButton";
 import Link from "next/link";
 import { AnimatedThemeToggler } from "@/components/magicui/animated-theme-toggler";
-import { Aurora } from "@/components/magicui/aurora";
-import {
-  TrendingUp,
-  BarChart3,
-  Clock,
-  Target,
-  Users,
-  Star,
-} from "lucide-react";
+
+const TrendingIcon = () => (
+  <svg
+    width="32"
+    height="32"
+    viewBox="0 0 32 32"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className="text-primary"
+  >
+    <path
+      d="M4 20L12 12L18 18L28 8"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M20 8H28V16"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+const AnalyticsIcon = () => (
+  <svg
+    width="32"
+    height="32"
+    viewBox="0 0 32 32"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <rect x="4" y="18" width="5" height="10" rx="1" fill="currentColor" />
+    <rect x="13" y="12" width="5" height="16" rx="1" fill="currentColor" />
+    <rect x="22" y="6" width="5" height="22" rx="1" fill="currentColor" />
+  </svg>
+);
+
+const TimerIcon = () => (
+  <svg
+    width="32"
+    height="32"
+    viewBox="0 0 32 32"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <circle cx="16" cy="18" r="12" stroke="currentColor" strokeWidth="2" />
+    <path
+      d="M16 10V18L22 22"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+    />
+    <path
+      d="M12 6L20 6"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+    />
+  </svg>
+);
+
+const TargetIcon = () => (
+  <svg
+    width="32"
+    height="32"
+    viewBox="0 0 32 32"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <circle cx="16" cy="16" r="12" stroke="currentColor" strokeWidth="2" />
+    <circle cx="16" cy="16" r="8" stroke="currentColor" strokeWidth="2" />
+    <circle cx="16" cy="16" r="4" stroke="currentColor" strokeWidth="2" />
+    <circle cx="16" cy="16" r="1" fill="currentColor" />
+  </svg>
+);
+
+const UsersIcon = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <circle cx="9" cy="7" r="4" stroke="currentColor" strokeWidth="2" />
+    <path
+      d="M3 21V19C3 16.7909 4.79086 15 7 15H11C13.2091 15 15 16.7909 15 19V21"
+      stroke="currentColor"
+      strokeWidth="2"
+    />
+    <circle cx="17" cy="7" r="3" stroke="currentColor" strokeWidth="2" />
+    <path
+      d="M21 21V19C21 17.3431 19.6569 16 18 16H17"
+      stroke="currentColor"
+      strokeWidth="2"
+    />
+  </svg>
+);
+
+const StarIcon = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+      fill="currentColor"
+    />
+  </svg>
+);
+
+const ArrowIcon = () => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 20 20"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M4 10L16 10M16 10L10 4M16 10L10 16"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-background relative">
-      <Aurora
-        colorStops={["#3A29FF", "#FF94B4", "#FF3232"]}
-        blend={0.5}
-        amplitude={1.0}
-        speed={0.5}
-        className="z-10"
-      />
       <div className="relative z-10">
-        {/* Header */}
         <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
           <div className="container mx-auto px-6 py-4">
             <nav className="flex justify-between items-center">
               <div className="flex items-center gap-2">
-                <TrendingUp size={32} className="text-primary" />
+                <TrendingIcon />
                 <span className="text-2xl font-bold text-foreground">
                   TrackIt
                 </span>
@@ -74,7 +192,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Features Section */}
           <section id="features" className="mt-20">
             <h2 className="text-3xl font-bold text-center text-foreground mb-4">
               Why Choose TrackIt?
@@ -86,7 +203,9 @@ export default function Home() {
             <div className="grid md:grid-cols-3 gap-8 mb-20">
               <div className="text-center p-8 bg-card rounded-xl shadow-sm border border-border hover:shadow-md transition-shadow">
                 <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-6">
-                  <BarChart3 className="w-8 h-8 text-primary" />
+                  <div className="text-primary">
+                    <AnalyticsIcon />
+                  </div>
                 </div>
                 <h3 className="text-xl font-semibold text-foreground mb-3">
                   Smart Analytics
@@ -99,7 +218,9 @@ export default function Home() {
 
               <div className="text-center p-8 bg-card rounded-xl shadow-sm border border-border hover:shadow-md transition-shadow">
                 <div className="w-16 h-16 bg-green-500/10 rounded-xl flex items-center justify-center mx-auto mb-6">
-                  <Clock className="w-8 h-8 text-green-600" />
+                  <div className="text-green-600">
+                    <TimerIcon />
+                  </div>
                 </div>
                 <h3 className="text-xl font-semibold text-foreground mb-3">
                   Pomodoro Timer
@@ -112,7 +233,9 @@ export default function Home() {
 
               <div className="text-center p-8 bg-card rounded-xl shadow-sm border border-border hover:shadow-md transition-shadow">
                 <div className="w-16 h-16 bg-purple-500/10 rounded-xl flex items-center justify-center mx-auto mb-6">
-                  <Target className="w-8 h-8 text-purple-600" />
+                  <div className="text-purple-600">
+                    <TargetIcon />
+                  </div>
                 </div>
                 <h3 className="text-xl font-semibold text-foreground mb-3">
                   Habit Tracking
@@ -124,12 +247,13 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Additional Features */}
             <div className="grid md:grid-cols-2 gap-8">
               <div className="bg-card p-8 rounded-xl border border-border">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <Users className="w-6 h-6 text-primary" />
+                    <div className="text-primary">
+                      <UsersIcon />
+                    </div>
                   </div>
                   <h3 className="text-xl font-semibold text-foreground">
                     Leaderboard
@@ -144,7 +268,9 @@ export default function Home() {
               <div className="bg-card p-8 rounded-xl border border-border">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <Star className="w-6 h-6 text-primary" />
+                    <div className="text-primary">
+                      <StarIcon />
+                    </div>
                   </div>
                   <h3 className="text-xl font-semibold text-foreground">
                     XP System
@@ -158,7 +284,6 @@ export default function Home() {
             </div>
           </section>
 
-          {/* CTA Section */}
           <section className="text-center py-20 bg-gradient-to-r from-primary/5 to-primary/10 rounded-2xl border border-border mt-20">
             <h2 className="text-3xl font-bold text-foreground mb-4">
               Ready to Transform Your Productivity?
@@ -172,17 +297,16 @@ export default function Home() {
               className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-4 px-8 rounded-lg transition-colors shadow-lg"
             >
               Start Your Journey
-              <TrendingUp size={20} />
+              <ArrowIcon />
             </Link>
           </section>
         </main>
 
-        {/* Footer */}
         <footer className="bg-muted/30 py-12 mt-20 border-t border-border">
           <div className="container mx-auto px-6">
             <div className="text-center">
               <div className="flex items-center justify-center gap-2 mb-4">
-                <TrendingUp size={24} className="text-primary" />
+                <TrendingIcon />
                 <span className="text-xl font-bold text-foreground">
                   TrackIt
                 </span>
