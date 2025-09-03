@@ -1,5 +1,6 @@
 "use client";
 import { ChartBarInteractive } from "@/components/chart";
+import Loader from "@/components/Loader";
 import { AnimatedThemeToggler } from "@/components/magicui/animated-theme-toggler";
 import { getUserStats } from "@/lib/action";
 import { AlignEndHorizontal, LogOut } from "lucide-react";
@@ -65,7 +66,9 @@ export default function ProfilePage() {
   }, [session, status]);
 
   if (status === "loading" || loading) {
-    return <div>Loading...</div>;
+    <div className="flex items-center justify-center min-h-screen">
+      <Loader />
+    </div>;
   }
 
   if (status === "unauthenticated") {

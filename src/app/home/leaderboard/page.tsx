@@ -3,7 +3,8 @@ import { getTopUser } from "@/lib/action";
 import Image from "next/image";
 import { ArrowBigLeft } from "lucide-react";
 import React, { useEffect, useState } from "react";
-
+import { is } from "date-fns/locale";
+import Loader from "@/components/Loader";
 interface UserInfo {
   name: string;
   image: string;
@@ -16,14 +17,23 @@ interface LeaderboardUser {
 }
 
 export default function LeaderBoard() {
+  const [isLoading, setIsLoading] = useState(true);
   const [userList, setUserList] = useState<LeaderboardUser[]>([]);
   useEffect(() => {
     const fetchData = async () => {
       const res = await getTopUser();
       setUserList(res || []);
+      setIsLoading(false);
     };
     fetchData();
   }, []);
+  if (isLoading === true) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader />
+      </div>
+    );
+  }
   return (
     <div className="p-6 bg-background">
       <div className="flex gap-4 mb-4 flex-col">

@@ -8,7 +8,7 @@ import Image from "next/image";
 import { Info, TrendingUp, X } from "lucide-react";
 import Calendar04 from "@/components/calendar-04";
 import { useHabits } from "@/store/useHabits";
-
+import Loader from "@/components/Loader";
 import Habit from "@/store/useHabits";
 import PomodoroTimer from "@/components/PomodoroTimer";
 import { getUserStats, initUserStats, markUserOnline } from "@/lib/action";
@@ -105,8 +105,13 @@ export default function PrivatePage() {
       .filter((tag) => tag);
     setNewHabit({ ...newHabit, tags: tagsArray });
   };
-
-  if (status === "loading") return <div>Loading...</div>;
+  if (status === "loading") {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader />
+      </div>
+    );
+  }
   if (!session) return null;
 
   return (
