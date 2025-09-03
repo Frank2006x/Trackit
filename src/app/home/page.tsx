@@ -319,10 +319,7 @@ export default function PrivatePage() {
               <TrendingUp size={40} />
             </div>
 
-            <div
-              className="flex items-center gap-5 cursor-pointer"
-              onClick={() => router.push("/home/profile")}
-            >
+            <div className="flex items-center gap-5 cursor-pointer">
               <span
                 className="text-sm font-medium text-foreground"
                 onClick={() => router.push("/home/profile")}
