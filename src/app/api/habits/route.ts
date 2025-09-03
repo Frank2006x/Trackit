@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
   const token =
     req.cookies.get("authjs.session-token")?.value ||
     req.cookies.get("__Secure-authjs.session-token")?.value;
-  console.log(token);
+  
   const { userId } = await SessionModel.findOne({ sessionToken: token });
   if (!userId)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

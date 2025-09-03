@@ -4,7 +4,7 @@ import UserStats from "@/models/userStats.model";
 import SessionModel from "@/models/session.model";
 
 export async function POST(req: NextRequest) {
-  console.log("Received POST request to create user stats");
+  
   await connectDB();
   try {
     const token =

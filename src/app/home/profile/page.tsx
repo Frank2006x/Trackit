@@ -25,7 +25,6 @@ export default function ProfilePage() {
   const [dataXp, setDataXp] = useState<userXpData[]>([]);
   const router = useRouter();
   useEffect(() => {
-    console.log("Session data:", session);
     const fetchUserStats = async () => {
       if (session?.user) {
         try {
@@ -49,9 +48,7 @@ export default function ProfilePage() {
             );
 
             setDataXp(processedXpData);
-            console.log("Processed XP Data:", processedXpData);
           }
-          console.log("User Stats:", response);
         } catch (error) {
           console.error("Failed to fetch user stats:", error);
         } finally {

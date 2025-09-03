@@ -96,7 +96,6 @@ export const useHabits = create<HabitsState>((set) => ({
 
   completeHabit: async (id: string) => {
     try {
-      console.log(id);
       const response = await axios.post(`/api/habits/complete/${id}`);
       axios.post("/api/userStats/xp", { xp: 10 });
 

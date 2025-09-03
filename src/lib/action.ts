@@ -38,7 +38,7 @@ export const getTopUser = async () => {
       });
     }
 
-    console.log("All users data:", allUsers);
+    
     return allUsers;
   } catch (err) {
     console.error("Failed to fetch top user:", err);

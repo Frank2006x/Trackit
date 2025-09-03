@@ -20,7 +20,6 @@ export default function LeaderBoard() {
   useEffect(() => {
     const fetchData = async () => {
       const res = await getTopUser();
-      console.log("Leader Board data:", res);
       setUserList(res || []);
     };
     fetchData();

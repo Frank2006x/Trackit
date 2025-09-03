@@ -39,7 +39,7 @@ const PomodoroTimer = ({ onTimerAction }: PomodoroTimerProps) => {
 
   const addXp = useCallback(async () => {
     try {
-      console.log("Adding 3 XP!");
+      
       await axios.post("/api/userStats/xp", { xp: 3 });
       setCurrentXp((prev) => prev + 3);
     } catch (error) {

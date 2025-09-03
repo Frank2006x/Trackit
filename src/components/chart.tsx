@@ -36,7 +36,7 @@ export function ChartBarInteractive({
 }: {
   userXpData: userXpData[];
 }) {
-  console.log(userXpData);
+  
   const total = React.useMemo(
     () => userXpData.reduce((acc, curr) => acc + curr.xp, 0),
     [userXpData]
